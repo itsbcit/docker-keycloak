@@ -1,10 +1,16 @@
 ---
-image_name: template_test
+image_name: keycloak
 registries:
   - url: bcit.io
 labels:
   maintainer: "jesse@weisner.ca, chriswood.ca@gmail.com"
+versions:
+  '18.0.0':
+    version_tags:
+      - '18.0.0'
+      - '18-latest'
 vars:
-  tini_version: '0.19.0'
-  de_version: '1.5'
-  dockerize_version: '0.6.1'
+  keycloak_build_envvars:
+    - KC_HEALTH_ENABLED=true
+    - KC_FEATURES=openshift_integration
+    - ENV KC_DB=postgres

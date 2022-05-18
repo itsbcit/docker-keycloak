@@ -1,16 +1,17 @@
-FROM quay.io/keycloak/keycloak:<%= image.version %> as builder
+FROM quay.io/keycloak/keycloak:18.0.0 as builder
 
-<% image.vars['keycloak_build_envvars'].each do |evar| -%>
-ENV <%= evar %>
-<% end -%>
+ENV KC_HEALTH_ENABLED=true
+ENV KC_FEATURES=openshift_integration
+ENV ENV KC_DB=postgres
 RUN /opt/keycloak/bin/kc.sh build
 
-FROM quay.io/keycloak/keycloak:<%= image.version %>
+FROM quay.io/keycloak/keycloak:18.0.0
 
 USER root
 RUN microdnf update -y && microdnf install -y tar gzip wget && microdnf clean all
 
-<%= snippet('labels', binding) -%>
+LABEL maintainer="jesse@weisner.ca, chriswood.ca@gmail.com"
+LABEL build_id="1652910459"
 
 # Add docker-entrypoint script base
 RUN mkdir /docker-entrypoint.d/ \
@@ -24,7 +25,10 @@ RUN mkdir /docker-entrypoint.d/ \
  && chown 0:0 /etc/shadow \
  && chmod 775 /etc
 
-<%= snippet('tini', binding) -%>
+# Add Tini
+ADD https://github.com/krallin/tini/releases/download/v0.19.0/tini-static-amd64 /tini
+RUN chmod +x /tini \
+ && ln -s /tini /sbin/tini 
 
 USER keycloak 
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
