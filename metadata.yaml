@@ -13,4 +13,4 @@ vars:
   keycloak_build_envvars:
     - KC_HEALTH_ENABLED=true
     - KC_FEATURES=openshift_integration
-    - ENV KC_DB=postgres
+    - KC_DB=postgres

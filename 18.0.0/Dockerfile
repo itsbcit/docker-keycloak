@@ -2,7 +2,7 @@ FROM quay.io/keycloak/keycloak:18.0.0 as builder
 
 ENV KC_HEALTH_ENABLED=true
 ENV KC_FEATURES=openshift_integration
-ENV ENV KC_DB=postgres
+ENV KC_DB=postgres
 RUN /opt/keycloak/bin/kc.sh build
 
 FROM quay.io/keycloak/keycloak:18.0.0
@@ -11,7 +11,7 @@ USER root
 RUN microdnf update -y && microdnf install -y tar gzip wget && microdnf clean all
 
 LABEL maintainer="jesse@weisner.ca, chriswood.ca@gmail.com"
-LABEL build_id="1652910459"
+LABEL build_id="1653000775"
 
 # Add docker-entrypoint script base
 RUN mkdir /docker-entrypoint.d/ \
