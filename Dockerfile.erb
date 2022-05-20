@@ -28,6 +28,7 @@ RUN mkdir /docker-entrypoint.d/ \
 
 USER keycloak 
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
+COPY ../bcit-keycloak-theme.jar /opt/keycloak/providers/bcit-keycloak-theme.jar
 WORKDIR /opt/keycloak
 
 ENTRYPOINT ["/tini", "--", "/docker-entrypoint.sh"]

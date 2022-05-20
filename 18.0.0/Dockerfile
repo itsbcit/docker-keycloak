@@ -11,7 +11,7 @@ USER root
 RUN microdnf update -y && microdnf install -y tar gzip wget && microdnf clean all
 
 LABEL maintainer="jesse@weisner.ca, chriswood.ca@gmail.com"
-LABEL build_id="1653000775"
+LABEL build_id="1653069776"
 
 # Add docker-entrypoint script base
 RUN mkdir /docker-entrypoint.d/ \
@@ -32,6 +32,7 @@ RUN chmod +x /tini \
 
 USER keycloak 
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
+COPY ../bcit-keycloak-theme.jar /opt/keycloak/providers/bcit-keycloak-theme.jar
 WORKDIR /opt/keycloak
 
 ENTRYPOINT ["/tini", "--", "/docker-entrypoint.sh"]
