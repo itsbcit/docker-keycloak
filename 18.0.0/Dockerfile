@@ -3,6 +3,7 @@ FROM quay.io/keycloak/keycloak:18.0.0 as builder
 ENV KC_HEALTH_ENABLED=true
 ENV KC_FEATURES=openshift_integration
 ENV KC_DB=postgres
+COPY --chown=1000:0 ../bcit-keycloak-theme.jar /opt/keycloak/providers/bcit-keycloak-theme.jar
 RUN /opt/keycloak/bin/kc.sh build
 
 FROM quay.io/keycloak/keycloak:18.0.0
@@ -11,7 +12,7 @@ USER root
 RUN microdnf update -y && microdnf install -y tar gzip wget && microdnf clean all
 
 LABEL maintainer="jesse@weisner.ca, chriswood.ca@gmail.com"
-LABEL build_id="1653069776"
+LABEL build_id="1653078127"
 
 # Add docker-entrypoint script base
 RUN mkdir /docker-entrypoint.d/ \
@@ -32,7 +33,6 @@ RUN chmod +x /tini \
 
 USER keycloak 
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
-COPY ../bcit-keycloak-theme.jar /opt/keycloak/providers/bcit-keycloak-theme.jar
 WORKDIR /opt/keycloak
 
 ENTRYPOINT ["/tini", "--", "/docker-entrypoint.sh"]
