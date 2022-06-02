@@ -14,3 +14,4 @@ vars:
     - KC_HEALTH_ENABLED=true
     - KC_FEATURES=openshift_integration
     - KC_DB=postgres
+    - KC_CACHE_CONFIG_FILE=cache-ispn-jdbc-ping.xml

@@ -2,8 +2,10 @@ FROM quay.io/keycloak/keycloak:<%= image.version %> as builder
 
 <% image.vars['keycloak_build_envvars'].each do |evar| -%>
 ENV <%= evar %>
-<% end -%>
+<% end %>
 COPY --chown=1000:0 ../bcit-keycloak-theme.jar /opt/keycloak/providers/bcit-keycloak-theme.jar
+COPY --chown=1000:0 ../cache-ispn-jdbc-ping.xml /opt/keycloak/conf/cache-ispn-jdbc-ping.xml
+
 RUN /opt/keycloak/bin/kc.sh build
 
 FROM quay.io/keycloak/keycloak:<%= image.version %>
